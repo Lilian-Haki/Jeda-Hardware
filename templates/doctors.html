@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary mb-3 mt-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Register Medical Staff
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Register Medical Staff</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="/dashboard_doc">
+                        <div class="mb-3">
+                            <label for="" class="form-label">First Name</label>
+                            <input type="text" class="form-control" name="first_name" id="first_name" aria-describedby="">
+                        </div>
+                        <div class="mb-3">
+                            <label for="" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" name="last_name" id="last_name" aria-describedby="">
+                        </div>
+                     
+                        <div class="dropdown">
+                            <label for="">Choose Role</label>
+                            <select name="role" id="survey_id">
+                                {% for role in roles %}
+
+                                {% if role.name == 'Medical Staff' %}
+
+                                <option selected value="{{role.id}}">{{role.name}}</option>
+
+                                {% else %}
+
+                                <option value="{{role.id}}">{{role.name}}</option>
+
+                                {% endif %}
+
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="form-label">Telephone</label>
+                            <input type="tel" class="form-control" name="telephone" id=""
+                                aria-describedby="emailHelp" placeholder="0712345678" pattern="[0-9]{10}">
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" id=""
+                                aria-describedby="emailHelp" value="">
+                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- this is the code for the table -->
+    <table id="myTable" class="table">
+        <thead>
+            <tr>
+                <th scope="col">First name</th>
+                <th scope="col">Last Name</th>
+                
+                <th scope="col">Telephone</th>
+                <th scope="col">Email</th>
+                <th scope="col">Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in medical_staff %}
+            {% if member.roles.name == 'Medical Staff' %}
+            <tr>
+                <td>{{member.first_name}}</td>
+                <td>{{member.last_name}}</td>
+                
+                <td>{{member.telephone}}</td>
+                <td>{{member.email}}</td>
+                <td>
+                    <a href="" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal{{member.id}}">
+                        Edit
+                    </a>
+                    <div class="modal fade" id="exampleModal{{member.id}}" tabindex="-1"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true" data-target>
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Edit Doctor Data</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{{url_for('edit_doctor')}}" method="post">
+                                        <input type="hidden" name="doctor_id" value="{{member.id}}">
+                                        <div class="form-group">
+                                            <label for="" class="form-label">First Name</label>
+                                            <input type="text" class="form-control" name="first_name" id=""
+                                                aria-describedby="emailHelp" value="{{member.first_name}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="form-label">Last Name</label>
+                                            <input type="text" class="form-control" name="last_name" id=""
+                                                aria-describedby="emailHelp" value="{{member.last_name}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="form-label">Email</label>
+                                            <input type="email" class="form-control" name="email" id=""
+                                                aria-describedby="emailHelp" value="{{member.email}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="" class="form-label">Telephone</label>
+                                            <input type="text" class="form-control" name="telephone" id=""
+                                                aria-describedby="emailHelp" value="{{member.telephone}}">
+                                        </div>
+                                        <input type="submit" class="btn btn-primary">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

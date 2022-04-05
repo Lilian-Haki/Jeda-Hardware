@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary mb-3 mt-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Create Role
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create New Role</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="/roles">
+                        <div class="mb-3">
+                            <label for="" class="form-label">Role Name</label>
+                            <input type="text" class="form-control" name="name" id="name" placeholder="Enter the name of the role you want to create" aria-describedby="">
+                        </div>
+                        <br>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- this is the code for the table -->
+    <table id="myTable" class="table">
+        <thead>
+            <tr>
+                <th scope="col">Role Name</th>
+                <th scope="col">Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for role in roles %}
+            <tr>
+                <td>{{role.name}}</td>
+                <td>
+                    <a href="" type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal{{role.id}}">
+                        Edit
+                    </a>
+                    <div class="modal fade" id="exampleModal{{role.id}}" tabindex="-1"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true" data-target>
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Edit Role Data</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="/edit_role" method="post">
+                                        <input type="hidden" name="role_id" value="{{role.id}}">
+                                        <div class="form-group">
+                                            <label for="" class="form-label">Role Name</label>
+                                            <input type="text" class="form-control" name="name" id=""
+                                                aria-describedby="emailHelp" value="{{role.name}}">
+                                        </div>                                        
+                                        <input type="submit" class="btn btn-primary">
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

@@ -1,0 +1,7 @@
+.link-button:hover {
+    border-bottom: 1px solid red;
+}
+
+.link-button {
+    font-weight: 600;
+}

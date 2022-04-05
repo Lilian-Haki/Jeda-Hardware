@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/static/css/style.css">
+  <title>My Website</title>
+  <link rel="stylesheet" href="/static/css/home_cards.css">
+</head>
+
+<body>
+  <!-- Header -->
+  <section id="header">
+    <div class="header container">
+      <div class="nav-bar">
+        <div class="brand">
+          <a href="#hero">
+            <u><h1><span>H</span>OUSE  <span>O</span>F  <span>T</span>HE  <span>O</span>LD</h1></u>
+          </a>
+        </div>
+        <div class="nav-list">
+          <div class="hamburger">
+            <div class="bar"></div>
+          </div>
+          <ul>
+            <li><a href="{{url_for('index')}}" data-after="Home">Home</a></li>
+            
+            <li><div class="dropdown"><a href="{{url_for('patients')}}" data-after="Service">PATIENTS</a>
+             </div></li>
+              <li><div class="dropdown"><a href="#services" data-after="Service">VISITORS</a>
+                </div></li>
+              
+            <li><a href="{{url_for('doctors')}}" data-after="About">MEDICAL STAFF</a></li>
+            <li><a href="{{url_for('appointments')}}" data-after="About">APPOINTMENTS</a></li>
+            <li><a  href="{{url_for('charges')}}" data-after="About">CHARGES</a></li>
+            <li><a href="{{url_for('dashboard')}}" data-after="Contact">DASHBOARD</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End Header -->
+
+
+  <!-- Hero Section  -->
+  <section id="hero">
+    <div class="hero container">
+      <div class="col-md-3">
+        <div class="card-counter success">
+          <i class="fa fa-users"></i>
+          <span class="count-numbers">{{ doctor_count }}</span>
+          <span class="count-name">Doctors</span>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card-counter primary">
+          <i class="fa fa-users"></i>
+          <span class="count-numbers">{{ appointment_count }}</span>
+          <span class="count-name">Appointments</span>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card-counter success">
+          <i class="fa fa-users"></i>
+          <span class="count-numbers">{{ staff_count }}</span>
+          <span class="count-name">Staff</span>
+        </div>
+      </div>
+      <!-- <div>
+        <h1>BEST CARE, <span></span></h1>
+        <h1>&<span></span></h1>
+        <h1>BEST DOCTORS<span></span></h1>
+        <P class="love">We are here to help to administer the best care <br>to your loved ones</P>
+        <a href="/appointments" type="button" class="cta">BOOK AN APPOINTMENT</a>
+      </div> -->
+    </div>
+  </section>
+  <!-- End Hero Section  -->
+
+  <!-- Service Section -->
+  
+  <!-- End Service Section -->
+
+  <!-- Projects Section -->
+  
+  <!-- End About Section -->
+
+  <!-- Contact Section -->
+  <section id="contact">
+    <div class="contact contain">
+      <div>
+        <h1 class="section-title">Contact <span>info</span></h1>
+      </div>
+      <div class="contact-items">
+        <div class="contact-item">
+          <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/phone.png" /></div>
+          <div class="contact-info">
+            <h1>Phone</h1>
+            <h2>+1 234 123 1234</h2>
+            <h2>+1 234 123 1234</h2>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/new-post.png" /></div>
+          <div class="contact-info">
+            <h1>Email</h1>
+            <h2>info@gmail.com</h2>
+            <h2>abcd@gmail.com</h2>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="icon"><img src="https://img.icons8.com/bubbles/100/000000/map-marker.png" /></div>
+          <div class="contact-info">
+            <h1>Address</h1>
+            <h2>Fatikchhari, Chittagong, Bangladesh</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End Contact Section -->
+
+  <!-- Footer -->
+  <section id="footer">
+    <div class="footer contain">
+      <div class="brand">
+        <h1><span>HOUSE</span>OF <span> THE</span>OLD</h1>
+      </div>
+      <h2>We care for your loved ones</h2>
+      <div class="social-icon">
+        <div class="social-item">
+          <a href="#"><img src="https://img.icons8.com/bubbles/100/000000/facebook-new.png" /></a>
+        </div>
+        <div class="social-item">
+          <a href="#"><img src="https://img.icons8.com/bubbles/100/000000/instagram-new.png" /></a>
+        </div>
+        <div class="social-item">
+          <a href="#"><img src="https://img.icons8.com/bubbles/100/000000/twitter.png" /></a>
+        </div>
+        <div class="social-item">
+          <a href="#"><img src="https://img.icons8.com/bubbles/100/000000/behance.png" /></a>
+        </div>
+      </div>
+      <p>Copyright © 2020 Arfan. All rights reserved</p>
+    </div>
+  </section>
+  <!-- End Footer -->
+  <script src="./static/app.js"></script>
+</body>
+
+</html>

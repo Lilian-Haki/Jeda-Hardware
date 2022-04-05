@@ -1,0 +1,339 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="container">
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-primary mb-3 mt-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Create Appointment
+  </button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Create Appointment</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form method="POST" action="{{url_for('appointments')}}">
+            <div class="dropdown">
+              <label for="">Choose Patient</label>
+              <select name="patient">
+                {% for patient in patients %}
+                <option value="{{patient.id}}">
+                  {{patient.first_name}} {{patient.last_name}} - {{patient.telephone}}
+                </option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="dropdown">
+              <label for="">Choose Doctor</label>
+              <select name="doctor">
+                {% for doctor in doctors %} {% if doctor.roles.name == 'Medical Staff' %}
+                <option value="{{doctor.id}}">
+                  {{doctor.first_name}} {{doctor.last_name}} -
+                  {{doctor.department}}
+                </option>
+                {% endif %} {% endfor %}
+              </select>
+            </div>
+            <hr />
+            <div class="mb-3">
+              <label for="">Start time</label>
+              <input type="date" id="" name="start_time" min="2022-03-30"  />
+            </div>
+            <div class="mb-3">
+              <label for="">End time</label>
+              <input type="date" id="" name="end_time" min="2022-03-30"/>
+            </div>
+            <hr />
+            <p>Triage</p>
+            <div class="form-floating">
+              <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"
+                name="triage_report"></textarea>
+              <label for="floatingTextarea">Triage Section Report</label>
+            </div>
+            <hr />
+            <p>Doctor</p>
+            <div class="form-floating">
+              <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"
+                name="symptoms_report"></textarea>
+              <label for="floatingTextarea">Symptoms Report</label>
+            </div>
+            <br />
+            <div class="form-floating">
+              <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"
+                name="medication_report"></textarea>
+              <label for="floatingTextarea">Medication Report</label>
+            </div>
+            <br />
+            <div class="form-floating">
+              <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"
+                name="other_remarks"></textarea>
+              <label for="floatingTextarea">Other Remarks</label>
+            </div>
+            <hr />
+            <p>Laboratory</p>
+            <div class="form-floating">
+              <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea"
+                name="lab_report"></textarea>
+              <label for="floatingTextarea">Lab Report</label>
+            </div>
+            <div class="mb-3">
+              <input type="hidden" id="" name="status" value="0" />
+            </div>
+            <br />
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="row">
+      {% for appointment in appointments %}
+      {% if role == 'Admin' or staff_id == appointment.staff.id %}
+      <div class="col mb-4">
+        <div class="card" style="width: 500px">
+          <h5 class="card-header">
+            Patient: {{ appointment.patients.first_name }} {{
+            appointment.patients.last_name }}
+          </h5>
+          <div class="card-body">
+            <h5 class="card-title">
+              Doctor: {{ appointment.staff.first_name }} {{
+              appointment.staff.last_name }} - {{ appointment.staff.department
+              }}
+            </h5>
+            <p class="card-text">Start Time: {{ appointment.start_time }}</p>
+            <p class="card-text">End Time: {{ appointment.end_time }}</p>
+            <p class="card-text">
+              Triage Report: {{ appointment.triage_report }}
+            </p>
+            <p class="card-text">
+              Symptoms Report: {{ appointment.symptoms_report }}
+            </p>
+            <p class="card-text">
+              Medication Report: {{ appointment.medication_report }}
+            </p>
+            <p class="card-text">
+              Other Remarks: {{ appointment.other_remarks }}
+            </p>
+            <p class="card-text">Lab Report: {{ appointment.lab_report }}</p>
+            {% if appointment.status == 0 %}
+            <p class="text-danger" scope="row">Appointment Incomplete</p>
+            {% else %}
+            <p class="text-success" scope="row">Appointment Complete</p>
+            {% endif %}
+            <p>
+              <!-- Button trigger modal -->
+              {% if appointment.status == 0 %}
+              {% if role == 'Admin' %}
+              <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                data-bs-target="#complete{{ appointment.id }}">
+                Mark Appointment as Complete
+              </button>
+              {% endif %}
+
+              <!-- Modal -->
+              <div class="modal fade" id="complete{{ appointment.id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel"></h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <p>Are you sure you want to mark this appointment as complete?</p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+                      <form action="{{ url_for('edit_appointment')}}" method="POST">
+                      <input type="hidden" name="appointment_id" value="{{appointment.id}}" />
+                      <button type="submit" class="btn btn-sm btn-success" value="1" name="status">Yes</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {% else %}
+
+              {% if role == 'Admin' %}
+              <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal"
+                data-bs-target="#complete{{ appointment.id }}">
+                Mark Appointment as Incomplete
+              </button>
+              {% endif %}
+
+              <!-- Modal -->
+              <div class="modal fade" id="complete{{ appointment.id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel"></h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+
+                      <p>Are you sure you want to mark this appointment as incomplete?</p>
+
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-sm btn-danger" data-bs-dismiss="modal">Close</button>
+                      <form action="{{ url_for('edit_appointment') }}" method="POST">
+                        <input type="hidden" name="appointment_id" value="{{appointment.id}}" />
+                        <button type="submit" class="btn btn-sm btn-success" value="0" name="status">Yes</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+            </p>
+            {% if appointment.status == 0 or role == 'Admin' %}
+            <hr />
+            <a href="" class="btn btn-primary" data-bs-toggle="modal"
+              data-bs-target="#exampleModal{{appointment.id}}">Edit</a>
+            {% endif %}
+              <div class="modal fade" id="exampleModal{{appointment.id}}" tabindex="-1"
+              aria-labelledby="exampleModalLabel" aria-hidden="true" data-target>
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                      Edit Appointment Data
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="{{url_for('edit_appointment')}}" method="POST">
+                      <input type="hidden" name="appointment_id" value="{{appointment.id}}" />
+                      <div class="dropdown">
+                        <label for="">Choose Patient</label>
+
+                        <select name="patient">
+                          {% for patient in patients %} {% if
+                          appointment.patients.id == patient.id%}
+
+                          <option selected value="{{patient.id}}">
+                            {{patient.first_name}} {{patient.last_name}} -
+                            {{patient.telephone}}
+                          </option>
+
+                          {% else %}
+
+                          <option value="{{patient.id}}">
+                            {{patient.first_name}} {{patient.last_name}} -
+                            {{patient.telephone}}
+                          </option>
+
+                          {% endif %} {% endfor %}
+                        </select>
+                      </div>
+                      <div class="dropdown">
+                        <label for="">Choose Doctor</label>
+                        <select name="doctor">
+                          {% for doctor in doctors %} {% if appointment.staff.id
+                          == doctor.id %}
+
+                          <option selected value="{{doctor.id}}">
+                            {{doctor.first_name}} {{doctor.last_name}} -
+                            {{doctor.department}}
+                          </option>
+
+                          {% else %}
+
+                          <option value="{{doctor.id}}">
+                            {{doctor.first_name}} {{doctor.last_name}} -
+                            {{doctor.department}}
+                          </option>
+
+                          {% endif %} {% endfor %}
+                        </select>
+                      </div>
+                      <div class="mb-3">
+                        <label for="">Start time</label>
+                        <input type="text" id="" value="{{appointment.start_time}}" name="start_time" />
+                      </div>
+                      <div class="mb-3">
+                        <label for="">End time</label>
+                        <input type="text" id="" value="{{appointment.end_time}}" name="end_time" />
+                      </div>
+                      <hr />
+                      <p style="font-weight: 700">Triage</p>
+                      <div style="margin-bottom: 1rem">
+                        <label for="floatingTextarea">Triage Section Report</label>
+                        {% if role == 'Admin' or role == 'Nurse' %}
+                        <textarea class="form-control" id="floatingTextarea"
+                          name="triage_report">{{appointment.triage_report}}</textarea>
+                        {% else %}
+                        <textarea class="form-control" id="floatingTextarea" name="triage_report"
+                          disabled>{{appointment.triage_report}}</textarea>
+                        {% endif %}
+                      </div>
+                      <hr />
+                      <p style="font-weight: 700">Doctor</p>
+                      <div>
+                        <label for="floatingTextarea">Symptoms Report</label>
+                        {% if role == 'Admin' or role == 'Medical Staff' %}
+                        <textarea class="form-control" id="floatingTextarea"
+                          name="symptoms_report">{{appointment.symptoms_report}}</textarea>
+                        {% else %}
+                        <textarea class="form-control" id="floatingTextarea" name="symptoms_report"
+                          disabled>{{appointment.symptoms_report}}</textarea>
+                        {% endif %}
+                      </div>
+                      <br />
+                      <div>
+                        <label for="floatingTextarea">Medication Report</label>
+                        {% if role == 'Admin' or role == 'Medical Staff' %}
+                        <textarea class="form-control" id="floatingTextarea"
+                          name="medication_report">{{appointment.medication_report}}</textarea>
+                        {% else %}
+                        <textarea class="form-control" id="floatingTextarea" name="medication_report"
+                          disabled>{{appointment.medication_report}}</textarea>
+                        {% endif %}
+                      </div>
+                      <br />
+                      <div>
+                        <label for="floatingTextarea">Other Remarks</label>
+                        {% if role == 'Admin' or role == 'Medical Staff' %}
+                        <textarea class="form-control" id="floatingTextarea"
+                          name="other_remarks">{{appointment.other_remarks}}</textarea>
+                        {% else %}
+                        <textarea class="form-control" id="floatingTextarea" name="other_remarks"
+                          disabled>{{appointment.other_remarks}}</textarea>
+                        {% endif %}
+                      </div>
+                      <hr />
+                      <p style="font-weight: 700">Laboratory</p>
+                      <div>
+                        <label for="floatingTextarea">Lab Report</label>
+                        {% if role == 'Admin' or role == 'Lab Technician' %}
+                        <textarea class="form-control" id="floatingTextarea"
+                          name="lab_report">{{appointment.lab_report}}</textarea>
+                        {% else %}
+                        <textarea class="form-control" id="floatingTextarea" name="lab_report"
+                          disabled>{{appointment.lab_report}}</textarea>
+                        {% endif %}
+                      </div>
+                      <br />
+                      <input type="submit" class="btn btn-primary" />
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% endblock %}
