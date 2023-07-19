@@ -572,10 +572,10 @@ def vis_repo():
         enddate = d["enddate"]
         print(type(startdate))
         x = datetime.strptime(startdate, '%Y-%m-%d')
-        x = datetime.strptime(enddate, '%Y-%m-%d')
+        y = datetime.strptime(enddate, '%Y-%m-%d')
         sales = Sales.query.filter(
             Sales.time_of_offering.between(startdate, enddate)).all()
-        return render_template("salesrepo.html", sales=sales, logged_in=logged_in, username=username)
+        return render_template("salesrepo.html", sales=sales, logged_in=logged_in, username=username,y=y)
 
 @app.route('/help', methods=['GET', 'POST'])
 @login_required
