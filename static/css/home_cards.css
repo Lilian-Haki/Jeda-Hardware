@@ -2,7 +2,7 @@
   box-shadow: 2px 2px 10px #dadada;
   margin: 5px;
   padding: 20px 10px;
-  background-color: #fff;
+  background-color: rgb(255, 255, 255);
   height: 100px;
   border-radius: 5px;
   transition: 0.3s linear all;
@@ -24,7 +24,7 @@
 }
 
 .card-counter.success {
-  background-color: #66bb6a;
+  background-color: #20203a;
   color: #fff;
 }
 

@@ -84,29 +84,30 @@
             <div class="row mx-auto py-3" style="margin-top:150px; width: 500px;">
                 <div class="col-xs-12 col-sm-8 col-md-12 col-sm-offset-2 col-md-offset-3">
                     <!-- alert -->
-                    <form action="/payment" method="POST" role="form" class="needs-validation" novalidate>
+                    <form action="/sales_report" method="POST" role="form">
                         <fieldset>
-                            <h2>CUSTOMERS TELEPHONE</h2>
+                            <h2>Sales Report Date Range</h2>
                             <hr class="colorgraph">
                             <div class="form-group">
-                                <input type="text" name="phone_number" id="phone_number" class="form-control input-lg"
-                                    placeholder="telephone" pattern="[+254|0][1|7][0-9]{8}" required>
-                                    <span id="text"></span>
-                                    <div class="invalid-feedback">
-                                      Please input correct format(07-- or 01--)!
-                                    </div>                              
+                                <input type="date" name="startdate" id="time" class="form-control input-lg"
+                                    placeholder="telephone">
+                            </div>
+                            <div class="form-group">
+                                <input type="date" name="enddate" id="time" class="form-control input-lg"
+                                    placeholder="telephone">
                             </div>
                           
                             
                             <hr class="colorgraph">
                             <div class="row">
                                 <div class="col-xs-6 col-sm-6 col-md-6">
-                                    <input type="submit" class="buttons" value="Proceed To Purchase">
+                                    <input type="submit" class="btn btn-lg btn-success btn-block" value="Enter Range">
                                 </div>
                                 
                             </div>
                         </fieldset>
                     </form>
+    
                 </div>
             </div>
     
