@@ -13,7 +13,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
     <script src="https://use.fontawesome.com/78bab9acb2.js"></script>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/style.css" media="screen">
+    <link rel="stylesheet" href="/static/css/gfg.css" media="print">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">            
     <link href='fullcalendar/main.css' rel='stylesheet' />
     <script src='fullcalendar/main.js'></script>
@@ -33,11 +34,12 @@
      var divContents = document.getElementById("GFG").innerHTML;
      var a = window.open('', '', 'height=500, width=500');
      a.document.write('<table>');
-     a.document.write('<h3><u>Receipt</u><br>');
+     a.document.write('<h3>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<u> Receipt</u><br>');
+     a.document.write('<h3>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp****Jeda Hardware****<br>');
      a.document.write(divContents);
-     a.document.write("</table>");
-
-     a.document.write("Thank you for shopping with us.");
+     a.document.write("</table><br>");
+     a.document.write("................................Thank you for shopping with us.................................</br>");
+     a.document.write("***********************************************************</br>");
      a.document.close();
      a.print();
     }
@@ -214,7 +216,7 @@
     {% endfor %}
     
 
-  <table border="1px"id="myTable" class="table">
+  <table cellspacing="6.8" id="myTable" class="table">
       <thead>
           <tr>
               <th scope="col">Product name</th>
@@ -235,9 +237,10 @@
 <!-- this is the code for the table -->
           </tr>
           {% endfor %}
+        </br>
       </tbody>
   </table>
- 
+</br>
 
   <div class="col-md-3">
       <div class="card-counter success">

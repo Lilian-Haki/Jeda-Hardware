@@ -99,8 +99,16 @@
               <div class="modal-body">
                 <form action="/suppliers" method="POST" id="form" class="needs-validation" novalidate autocomplete="off">
                   <div class="form-group">
-                    <label for="exampleInputEmail1">Name</label>
-                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="supplier name" name="name" required>
+                    <div class="dropdown">
+                    <label for="">Name</label>
+                    <select name="name" required >
+                      {% for product in product %}
+                      <option value="{{product.supplier}}">
+                        {{product.supplier}}
+                      </option>
+                      {% endfor %}
+                    </select>
+                  </div>
                     <div class="invalid-feedback">
                       Please fill out this field!
                     </div>                              
@@ -152,7 +160,7 @@
               </thead>
               <tbody>
                 
-                {% for i in data: %}
+                {% for i in dataa: %}
                 <tr> 
                   <!-- <th scope="row"> 1 </th> -->
                   <td> {{i[0]}} </td>
@@ -182,8 +190,15 @@
                         <input type="text" class="form-control" id="exampleInputPassword1" value="{{i[0]}}" name="id" required>
                       </div>
                       <div class="form-group">
-                        <label for="exampleInputPassword1">Suppliers Name </label>
-                        <input type="text" class="form-control" id="exampleInputPassword1" value="{{i[1]}}" name="name" required>
+                        <label for="exampleInputPassword1">Suppliers Name </label></br>
+                        <select name="name" required selected value="{{i[1]}}">
+                          <option selected value="{{i[1]}}">{{i[1]}}</option>
+                        {% for product in product %}
+                        <option>
+                          {{product.supplier}}
+                        </option>
+                        {% endfor %} 
+                      </select> 
                         <div class="invalid-feedback">
                           Please fill out this field!
                         </div>                                  

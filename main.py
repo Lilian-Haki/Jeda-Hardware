@@ -1,5 +1,4 @@
 from configs.base_config import *
-from unicodedata import category
 from flask_login import UserMixin,login_required
 from flask import Flask, render_template, request, redirect, url_for, flash, session, make_response
 from werkzeug.security import generate_password_hash
@@ -15,7 +14,6 @@ from sqlalchemy import func
 import psycopg2
 import json
 import ast
-import pdfkit
 from datetime import datetime
 app = Flask(__name__)
 
@@ -38,15 +36,10 @@ app.app_context().push()
 # from models.inventory import Inventory
 # from utils.init_roles import *
 
-class Category(db.Model):
-    __tablename__ = 'category'
-
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(80), unique=True, nullable=False)
 
 
 class Products(db.Model):
-    __tablename__ = 'products'
+    __tablename__ = 'product'
     id = db.Column(db.Integer, primary_key=True)
     supplier = db.Column(db.String(80),  nullable=False)
     product_name = db.Column(db.String(80), nullable=False)
@@ -54,7 +47,6 @@ class Products(db.Model):
     buying_price = db.Column(db.Integer, nullable=False)
     selling_price = db.Column(db.Integer, nullable=False)
     stock_quantity = db.Column(db.Integer, nullable=False)
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
 
     #rel = db.relationship('Payment', backref='products', lazy=True)
 
@@ -70,7 +62,7 @@ class Customer(db.Model):
     #relat = relationship("Payment", backref=db.backref("customers", lazy="joined"))
 
 class Suppliers(db.Model):
-    __tablename__ = 'suppliers'
+    __tablename__ = 'supplier'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80),  nullable=False)
     contact = db.Column(db.String(13),  nullable=False)
@@ -79,7 +71,7 @@ class Suppliers(db.Model):
 class Payment(db.Model):
     __tablename__ = 'payment'
     id = db.Column(db.Integer, primary_key=True)
-    product_id = db.Column(db.Integer, db.ForeignKey('products.id'))
+    product_id = db.Column(db.Integer, db.ForeignKey('product.id'))
     customers_id = db.Column(db.Integer, db.ForeignKey('customers.id'))
     service_offered = db.Column(db.String(80),  nullable=True)
     cost = db.Column(db.Integer, nullable=True)
@@ -91,32 +83,12 @@ class Payment(db.Model):
 class Sales(db.Model):
     __tablename__ = 'sales'
     id = db.Column(db.Integer, primary_key=True)
-    pid = db.Column(db.Integer, db.ForeignKey('products.id'))
+    pid = db.Column(db.Integer, db.ForeignKey('product.id'))
     product_name = db.Column(db.String(80),  nullable=True)
     quantity_bought = db.Column(db.Integer, nullable=True)
     total_paid = db.Column(db.Integer, nullable=True)
     time_of_offering = db.Column(db.DateTime(
         timezone=True), server_default=func.now())
-
-class Invoices(db.Model):
-    __tablename__ = 'invoices'
-    id = db.Column(db.Integer, primary_key=True)
-    product_id = db.Column(db.Integer, db.ForeignKey('products.id'))
-    customers_id = db.Column(db.Integer, db.ForeignKey('customers.id'))
-
-    payment_id = db.Column(db.Integer, db.ForeignKey('payment.id'))
-    service_offered = db.Column(db.String(80),  nullable=True)
-    cost = db.Column(db.Integer, nullable=True)
-    quantity = db.Column(db.Integer, nullable=True)
-    subtotal = db.Column(db.Integer, nullable=True)
-    time_of_offering = db.Column(db.DateTime(
-        timezone=True), server_default=func.now())
-
-    
-
-
-
-
 
 
 class Admin(UserMixin,db.Model):
@@ -160,16 +132,6 @@ class Admin(UserMixin,db.Model):
     def fetch_by_email(cls, email):
         return cls.query.filter_by(email=email).first()
 
-def seeding():
-    category = ['Doors', 'Wall', 'Electronics', ' Roof']
-
-    for category in category:
-        exists = Category.query.filter_by(name=category).first()
-
-        if not exists:
-            new_category = Category(name=category)
-            db.session.add(new_category)
-            db.session.commit()
             
                 
 db.create_all()
@@ -280,11 +242,11 @@ def logout():
 def dashboard():
     logged_in = session['logged_in']
     username = session['username']
-    cur.execute("select count(id) from products")
+    cur.execute("select count(id) from product")
     data1 = cur.fetchone()
     cur.execute("select count(id) from customers")
     data2 = cur.fetchone()
-    cur.execute("select count(id) from suppliers")
+    cur.execute("select count(id) from supplier")
     data3 = cur.fetchone()
     cur.execute("select count(id) from sales")
     data4 = cur.fetchone()
@@ -318,7 +280,7 @@ def products():
         buying_price = request.form["buying_price"]
         selling_price = request.form["selling_price"]
         stock_quantity = request.form["stock_quantity"]
-        cur.execute("INSERT INTO products(supplier,product_name,category,buying_price,selling_price,stock_quantity) values(%s,%s,%s,%s,%s,%s)",
+        cur.execute("INSERT INTO product(supplier,product_name,category,buying_price,selling_price,stock_quantity) values(%s,%s,%s,%s,%s,%s)",
                     (supplier,product_name,category, buying_price, selling_price, stock_quantity))
         conn.commit()
         
@@ -326,10 +288,8 @@ def products():
 
     else:
 
-        products = Category.query.all()
-        cur.execute("SELECT category FROM products")
-
-        cur.execute("SELECT * FROM products")
+        products = Products.query.all()
+        cur.execute("SELECT * FROM product")
         data = cur.fetchall()
         return render_template("products.html", logged_in=logged_in, username=username, data=data,products=products)
 
@@ -356,7 +316,6 @@ def edit_products():
         db.session.add(product_to_edit)
         db.session.commit()
 
-        flash("Product successfully edited", "success")      
 
         return redirect(url_for('products'))
 
@@ -399,7 +358,6 @@ def edit_customers():
         db.session.commit()
 
 
-        flash("Customer successfully edited", "success")      
 
         return redirect(url_for('customers'))
 
@@ -414,15 +372,16 @@ def suppliers():
         contact = request.form["contact"]
         email_address = request.form["email_address"]
         
-        cur.execute("INSERT INTO suppliers(name,contact,email_address) values(%s,%s,%s)",
+        cur.execute("INSERT INTO supplier(name,contact,email_address) values(%s,%s,%s)",
                     (name,contact,email_address))
         conn.commit()
         return redirect("/suppliers")
 
     else:
-        cur.execute("SELECT * FROM suppliers")
-        data = cur.fetchall()
-        return render_template("supplier.html", data=data, logged_in=logged_in, username=username)
+        product = Products.query.all()
+        cur.execute("SELECT * FROM supplier")
+        dataa = cur.fetchall()
+        return render_template("supplier.html", dataa=dataa, logged_in=logged_in, username=username,product=product)
 
 @app.route("/edit_supplier", methods=["GET", "POST"])
 @login_required   
@@ -487,7 +446,7 @@ def bill():
     if request.method == 'POST':
         service_offered = request.form['service_offered']
         quantity = request.form["stock_quantity"]
-        cur.execute("SELECT stock_quantity FROM products where product_name=%s", [service_offered])
+        cur.execute("SELECT stock_quantity FROM product where product_name=%s", [service_offered])
         stock_quantity = cur.fetchone()
         squantity= stock_quantity[0]
         
@@ -504,13 +463,14 @@ def bill():
             cur.execute("INSERT INTO sales(product_name,quantity_bought,total_paid,time_of_offering) values(%s,%s,%s,%s)", (
                 service_offered,quantity,subtotal,time_of_offering))
 
-            cur.execute("UPDATE products set stock_quantity=%(rem)s where product_name=%(product_name)s", {
+            cur.execute("UPDATE product set stock_quantity=%(rem)s where product_name=%(product_name)s", {
                         "product_name": service_offered, "rem": rem})
             conn.commit()
             
             x = session['paymentid']
-            cur.execute("SELECT id FROM products where product_name=%s", [service_offered])
+            cur.execute("SELECT id FROM product where product_name=%s", [service_offered])
             y = cur.fetchone()
+            print(y)
             payment = Payment(
             customers_id=x,product_id=y, service_offered=service_offered,cost=cost,quantity=quantity,subtotal=subtotal,time_of_offering=time_of_offering)
             db.session.add(payment)
