@@ -114,8 +114,7 @@
                   </div>
                   <div class="form-group">
                     <label for="exampleInputEmail1">Phone Number</label>
-
-                    <input type="text" class="form-control" pattern="[+254|0][1|7][0-9]{8}" id="phone_number" aria-describedby="emailHelp" placeholder="phone number" name="phone_number" onkeydown="validation()" required>
+                    <input type="text" class="form-control" pattern="^(0)?(7|1)([0-9]{8})$" id="phone_number" aria-describedby="emailHelp" placeholder="phone number" name="phone_number" onkeydown="validation()" required>
                     <span id="text"></span>
                     <div class="invalid-feedback">
                       Please input correct format(07-- or 01--)!
@@ -176,9 +175,8 @@
                   <div class="modal-body">
                     <form action="/edit_customers" method="POST" id="form" class="needs-validation" novalidate autocomplete="off"> 
                       <div class="form-group">
-                        <label for="exampleInputPassword1"> Id  </label>
-                        <input type="text" class="form-control" id="exampleInputPassword1" value="{{i[0]}}" name="id">
-                      </div>
+                        <input type="hidden"  value="{{i[0]}}" name="id" required>
+                          </div>
                       <div class="form-group">
                         <label for="exampleInputPassword1">Customers Name</label>
                         <input type="text" class="form-control" id="name" value="{{i[1]}}" name="name" pattern="[A-Za-z\s]+" required="">
@@ -199,7 +197,7 @@
                           </div>
                       <div class="form-group">
                         <label for="exampleInputPassword1">Phone Number  </label>
-                        <input type="text" class="form-control" id="exampleInputPassword1" value="{{i[3]}}" pattern="[+254|0][1|7][0-9]{8}" name="phone_number" required>
+                        <input type="tel" class="form-control" id="phone_number" value="{{i[3]}}" pattern="^(0)?(7|1)([0-9]{8})$" name="phone_number" required>
                         <div class="invalid-feedback">
                           Please input correct format(07-- or 01--)!
                         </div>                  
@@ -266,6 +264,31 @@
           form.classList.remove("valid");
           form.classList.add("invalid");
           text.innerHTML = "Please enter valid email address!";
+          text.style.color = "#ff0000";
+
+      }
+  }
+
+</script>
+<script type="tel/javascript">
+  function validation()
+  {
+      var form = document.getElementById("form");
+      var phone_number = document.getElementById("phone_number").value;
+      var tel = document.getElementById("tel");
+      var pattern = /^(254)?(7|1)([0-9]{9})$/;
+
+      if (email.match(pattern))
+      {
+          form.classList.add("valid");
+          form.classList.remove("invalid");
+          text.innerHTML = "The phone number is valid";
+          text.style.color = "#fff";
+      }
+      else{
+          form.classList.remove("valid");
+          form.classList.add("invalid");
+          text.innerHTML = "Please enter valid phone number!";
           text.style.color = "#ff0000";
 
       }

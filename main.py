@@ -304,7 +304,7 @@ def edit_products():
         buying_price = request.form["buying_price"]
         selling_price = request.form["selling_price"]
         stock_quantity = request.form["stock_quantity"]
-        
+
         product_to_edit = Products.query.filter_by(id=id).first()
         product_to_edit.supplier = supplier
         product_to_edit.product_name = product_name
@@ -489,7 +489,14 @@ def paybill():
 
         subtotal = int(subtotal)
         subtotal = -abs(int(subtotal))
-
+        if subtotal < 0:
+            pass
+            flash("Kindly input correct amount!!")
+        else :
+            if subtotal > subtotal:
+                pass
+            flash("Kindly input correct amount!!")
+            return redirect('/chargestable')
         x = session['paymentid']
         payment = Payment(
             customers_id=x, service_offered=service_offered, subtotal=subtotal,time_of_offering=time_of_offering)

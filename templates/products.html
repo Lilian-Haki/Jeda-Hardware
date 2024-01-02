@@ -106,11 +106,14 @@
                     <label for="exampleInputEmail1">Supplier</label>
                     <input list="supplier" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="supplier name" name="supplier" required>
                     <datalist id="supplier" name="supplier">
-                      {% for i in data: %}
-                      <option value="{{i[1]}}">
-                        {{i[1]}}
-                      </option>
-                      {% endfor %}
+                        <option value="Harun ayub store"></option>
+                        <option value="Jakim stores"></option>
+                        <option value="Paleah hardware"></option>
+                        <option value="Modesty store"></option>
+                        <option value="Comic store"></option>
+                        <option value="Alihass hardware"></option>
+                        <option value="Ace hardware store"></option>
+                        <option value="Lowe's stores"></option>
                     </datalist>
                   </div>
                   <div class="form-group">
@@ -122,14 +125,30 @@
                   </div>
                   <div class="form-group">
                     <label for="exampleInputEmail1">Category</label>
-                    <select class="form-select" id="category" name="category" type="text" required>
-                      <option selected disabled value="">Choose...</option>
-                      <option>Doors</option>
-                      <option>Windows</option>
-                      <option>Wall</option>
-                      <option>Construction</option>
-                      <option>Electronics</option>
-                    </select>
+                    <input list="category" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="category" name="category" required>
+                    <datalist id="category" name="category">
+                      <option value="Plumbing"></option>
+                      <option value="Machinery"></option>
+                      <option value="Household equipment"></option>
+                      <option value="Gardening"></option>
+                      <option value="Carpentry"></option>
+                      <option value="Electrical"></option>
+                      <option value="Paint & sundries"></option>
+                      <option value="Outdoor power equipment"></option>
+                      <option value="Lumber"></option>
+                      <option value="Building materials"></option>
+                      <option value="Hand tools"></option>
+                      <option value="Measuring scales"></option>
+                      <option value="Bulb and lights"></option>
+                      <option value="Wires"></option>
+                      <option value="Door hardware & locks"></option>
+                      <option value="Ladders"></option>
+                      <option value="Bathroom hardware"></option>
+                      <option value="Window hardware"></option>
+                      <option value="Gate hardware"></option>
+                      <option value="Nail,screws & fasteners"></option>
+                      <option value="Cabinet hardware"></option>
+                  </datalist>
                     <div class="invalid-feedback">
                       Please fill out this field!
                     </div>                
@@ -229,17 +248,20 @@
                             <div class="modal-body">
                               <form action="/edit_products" method="POST" class="needs-validation" novalidate autocomplete="off"> 
                                 <div class="form-group">
-                                  <label for="exampleInputPassword1">Id</label>
-                                  <input type="text" class="form-control" id="exampleInputPassword1" value="{{i[0]}}" name="id">
-
+                                  <input type="hidden"  value="{{i[0]}}" name="id" required>
                                 </div>
                                 <div class="form-group">
-                                  <label for="exampleInputPassword1">Supplier</label>
-                                    <select name="supplier" required value="{{i[1]}}">
+                                  <label for="exampleInputPassword1">Supplier</label></br>
+                                    <select name="supplier" class="form-select" id="exampleInputPassword1">
                                       <option selected value="{{i[1]}}">{{i[1]}}</option>
-                                      {% for products in products %}
-                                      <option>{{products.supplier}}</option>
-                                      {% endfor %} 
+                                      <option value="Harun ayub store">Harun ayub store</option>
+                                      <option value="Jakim stores">Jakim stores</option>
+                                      <option value="Paleah hardware">Paleah hardware</option>
+                                      <option value="Modesty store">Modesty store</option>
+                                      <option value="Comic store">Comic store</option>
+                                      <option value="Alihass hardware">Alihass hardware</option>
+                                      <option value="Ace hardware store">Ace hardware store</option>
+                                      <option value="Lowe's stores">Lowe's stores</option>
                                     </select> 
                                   <div class="invalid-feedback">
                                     Please fill out this field!
@@ -257,15 +279,27 @@
                                   <label for="exampleInputPassword1">Category</label>
                                   <select class="form-select" id="validationCustom04" selected value="{{i[3]}}" name="category" type="text" required>
                                     <option selected value="{{i[3]}}">{{i[3]}}</option>
-                                    <option>Windows</option>
-                                    <option>Wall</option>
-                                    <option>Construction</option>
-                                    <option>Doors</option>
-                                    <option>Electronics</option>
-                                    <option>roof</option>
-                                    <option>eletronics</option>
-                                    <option>toiletries</option>
-
+                                    <option value="Plumbing">Plumbing</option>
+                                    <option value="Machinery">Machinery</option>
+                                    <option value="Household equipment">Household equipment</option>
+                                    <option value="Gardening">Gardening</option>
+                                    <option value="Carpentry">Carpentry</option>
+                                    <option value="Electrical">Electrical</option>
+                                    <option value="Paint & sundries">Paint & sundries</option>
+                                    <option value="Outdoor power equipment">Outdoor power equipment</option>
+                                    <option value="Lumber">Lumber</option>
+                                    <option value="Building materials">Building materials</option>
+                                    <option value="Hand tools">Hand tools</option>
+                                    <option value="Measuring scales">Measuring scales</option>
+                                    <option value="Bulb and lights">Bulb and lights</option>
+                                    <option value="Wires">Wires</option>
+                                    <option value="Door hardware & locks">Door hardware & locks</option>
+                                    <option value="Ladders">Ladders</option>
+                                    <option value="Bathroom hardware">Bathroom hardware</option>
+                                    <option value="Window hardware">Window hardware</option>
+                                    <option value="Gate hardware">Gate hardware</option>
+                                    <option value="Nail,screws & fasteners">Nail,screws & fasteners</option>
+                                    <option value="Cabinet hardware">Cabinet hardware</option>              
                                   </select>
                                   <div class="invalid-feedback">
                                     Please fill out this field!
